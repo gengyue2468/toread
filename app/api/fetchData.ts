@@ -14,6 +14,11 @@ export async function getToReadList() {
   return res.data;
 }
 
+export async function getToReadListById(id: string) {
+  const res = await axios.get(`${baseUrl}/api/toread/${id}`);
+  return res.data;
+}
+
 export async function getReadList() {
   const res = await axios.get(`${baseUrl}/api/toread?status=read`);
   return res.data;

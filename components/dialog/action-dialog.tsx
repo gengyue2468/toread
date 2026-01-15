@@ -42,12 +42,16 @@ export function ActionDialog({
           </Dialog.Description>
           <div className="mt-6 flex justify-end gap-4">
             <Dialog.Close asChild>
-              <button className="cursor-pointer leading-none text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100  focus:outline-none py-2 px-4 rounded-full hover:bg-stone-200 dark:hover:bg-neutral-800 transition-colors">
+              <button
+                onClick={(e) => e.stopPropagation()}
+                className="cursor-pointer leading-none text-neutral-700 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-neutral-100  focus:outline-none py-2 px-4 rounded-full hover:bg-stone-200 dark:hover:bg-neutral-800 transition-colors"
+              >
                 Cancel
               </button>
             </Dialog.Close>
             <button
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 onConfirm();
                 onOpenChange(false);
               }}

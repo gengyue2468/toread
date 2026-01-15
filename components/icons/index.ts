@@ -8,6 +8,7 @@ import { FileCheckIcon } from "./file-check";
 import { FolderLockIcon } from "./folder-lock";
 import { LockKeyholeOpenIcon } from "./locker";
 import { XIcon } from "./x";
+import { ArrowLeftIcon } from "./arrow-left";
 
 export {
   LinkIcon,
@@ -20,4 +21,5 @@ export {
   LockKeyholeOpenIcon,
   LoaderIcon,
   XIcon,
+  ArrowLeftIcon,
 };

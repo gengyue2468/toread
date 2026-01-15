@@ -3,7 +3,6 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import axios from "axios";
-import type { ToReadItem } from "@/types/item";
 
 const baseUrl = process.env.TOREAD_API_URL || "http://localhost:3000";
 
@@ -14,9 +13,10 @@ async function checkAuth() {
   }
 }
 
-export async function deleteToReadItem(id: string) {
+export async function deleteToReadItem(id: string | string[]) {
   await checkAuth();
-  const res = await axios.delete(`${baseUrl}/api/toread/${id}`);
+  const normalizedId = Array.isArray(id) ? id[0] : id;
+  const res = await axios.delete(`${baseUrl}/api/toread/${normalizedId}`);
   return res.data;
 }
 

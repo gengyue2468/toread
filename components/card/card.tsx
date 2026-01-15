@@ -15,6 +15,7 @@ import {
 import { ActionDialog } from "../dialog";
 import Link from "next/link";
 import type { ToReadItem } from "@/types/item";
+import { useRouter } from "next/navigation";
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -23,6 +24,7 @@ interface CardProps {
   item: ToReadItem;
   handleDelete: (id: string) => void;
   handleMarkAsRead: (item: ToReadItem) => void;
+  handleMarkAsUnread: (item: ToReadItem) => void;
   displayUrl: string;
 }
 
@@ -30,8 +32,10 @@ export default function Card({
   item,
   handleDelete,
   handleMarkAsRead,
+  handleMarkAsUnread,
   displayUrl,
 }: CardProps) {
+  const router = useRouter();
   const [toggleOpen, setToggleOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const isUnread = item.status === "unread";
@@ -39,9 +43,10 @@ export default function Card({
 
   return (
     <div
+      onClick={() => router.push(`/read/${item.id}`)}
       key={item.id}
       className={classNames(
-        "block hover:bg-stone-200/50 dark:hover:bg-neutral-800/50 p-8 -translate-x-8 w-[calc(100%+4rem)] transition-all border-y border-stone-200 dark:border-neutral-800",
+        "cursor-pointer block hover:bg-stone-200/50 dark:hover:bg-neutral-800/50 p-8 -translate-x-8 w-[calc(100%+4rem)] transition-all border-y border-stone-200 dark:border-neutral-800",
         !isUnread
           ? "opacity-30"
           : "opacity-100 hover:opacity-100 group-hover:opacity-50"
@@ -96,13 +101,18 @@ export default function Card({
               : "Are you sure to unread this item?"
           }
           confirmText={isUnread ? "Mark as Read" : "Mark as Unread"}
-          onConfirm={() => handleMarkAsRead(item)}
+          onConfirm={() =>
+            isUnread ? handleMarkAsRead(item) : handleMarkAsUnread(item)
+          }
           isDanger={!isUnread}
           trigger={
             <button
+              onClick={(e) => e.stopPropagation()}
               className={classNames(
                 "h-8 px-2 flex items-center hover:bg-stone-200 dark:hover:bg-neutral-800 rounded-full transition-colors cursor-pointer",
-                isUnread ? "text-yellow-500 dark:text-yellow-200" : "text-blue-600 dark:text-blue-400"
+                isUnread
+                  ? "text-yellow-500 dark:text-yellow-200"
+                  : "text-blue-600 dark:text-blue-400"
               )}
             >
               <EyeIcon size={16} />
@@ -122,7 +132,10 @@ export default function Card({
           onConfirm={() => handleDelete(item.id)}
           isDanger
           trigger={
-            <button className="size-8 hover:text-red-500 rounded-full transition-colors cursor-pointer hover:bg-stone-200 dark:hover:bg-neutral-800 flex items-center justify-center">
+            <button
+              onClick={(e) => e.stopPropagation()}
+              className="size-8 hover:text-red-500 rounded-full transition-colors cursor-pointer hover:bg-stone-200 dark:hover:bg-neutral-800 flex items-center justify-center"
+            >
               <DeleteIcon size={16} />
             </button>
           }

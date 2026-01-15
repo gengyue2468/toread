@@ -15,6 +15,7 @@ import Card from "@/components/card";
 import { FileCheckIcon, LoaderIcon } from "@/components/icons";
 import { ActionDialog } from "@/components/dialog";
 import { useSession } from "next-auth/react";
+import { sortItemsByDate, getDisplayUrl } from "@/lib/utils";
 
 export default function App() {
   const { data: session } = useSession();
@@ -28,11 +29,7 @@ export default function App() {
     checkHealth().then((data) => setStatus(data.status));
 
     Promise.all([getToReadList(), getReadList()]).then(([toRead, read]) => {
-      const combined = [...toRead.items, ...read.items];
-      combined.sort(
-        (a, b) =>
-          new Date(b.added_at).getTime() - new Date(a.added_at).getTime()
-      );
+      const combined = sortItemsByDate([...toRead.items, ...read.items]);
       setItemList(combined);
       setIsLoading(false);
     });
@@ -64,6 +61,23 @@ export default function App() {
         )
       );
       await updateToReadItem(item.id, { status: "read" });
+    } catch (err: any) {
+      setAccessDeniedOpen(true);
+    }
+  };
+
+  const handleMarkAsUnread = async (item: ToReadItem) => {
+    if (!session) {
+      setAccessDeniedOpen(true);
+      return;
+    }
+    try {
+      setItemList((prev) =>
+        prev.map((i) =>
+          i.id === item.id ? { ...i, status: "unread" as const, read_at: null } : i
+        )
+      );
+      await updateToReadItem(item.id, { status: "unread" });
     } catch (err: any) {
       setAccessDeniedOpen(true);
     }
@@ -136,51 +150,45 @@ export default function App() {
           {isLoading ? (
             <LoaderIcon className="mx-auto my-16 animate-spin" />
           ) : (
-            itemList.map((item) => {
-              const displayUrl = item.url.split("/").slice(0, 3).join("/");
-              return (
+            itemList.map((item) => (
                 <Card
                   key={item.id}
                   item={item}
                   handleDelete={handleDelete}
                   handleMarkAsRead={handleMarkAsRead}
-                  displayUrl={displayUrl}
+                  handleMarkAsUnread={handleMarkAsUnread}
+                  displayUrl={getDisplayUrl(item.url)}
                 />
-              );
-            })
+              ))
           )}
         </Tabs.Content>
         <Tabs.Content value="unread">
           {itemList
             .filter((item) => item.status === "unread")
-            .map((item) => {
-              const displayUrl = item.url.split("/").slice(0, 3).join("/");
-              return (
+            .map((item) => (
                 <Card
                   key={item.id}
                   item={item}
                   handleDelete={handleDelete}
                   handleMarkAsRead={handleMarkAsRead}
-                  displayUrl={displayUrl}
+                  handleMarkAsUnread={handleMarkAsUnread}
+                  displayUrl={getDisplayUrl(item.url)}
                 />
-              );
-            })}
+              ))}
         </Tabs.Content>
         <Tabs.Content value="read">
           {itemList
             .filter((item) => item.status === "read")
-            .map((item) => {
-              const displayUrl = item.url.split("/").slice(0, 3).join("/");
-              return (
+            .map((item) => (
                 <Card
                   key={item.id}
                   item={item}
                   handleDelete={handleDelete}
                   handleMarkAsRead={handleMarkAsRead}
-                  displayUrl={displayUrl}
+                  handleMarkAsUnread={handleMarkAsUnread}
+                  displayUrl={getDisplayUrl(item.url)}
                 />
-              );
-            })}
+              ))}
         </Tabs.Content>
       </Tabs.Root>
     </div>
