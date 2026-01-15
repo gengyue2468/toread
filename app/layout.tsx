@@ -3,7 +3,7 @@ import { Public_Sans, Lora } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 import { AuthProvider } from "@/components/auth";
-import BottomBar from "@/components/bottom-bar";
+import BottomBar from "@/components/bottom-bar/bottom-bar";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -16,7 +16,7 @@ const lora = Lora({
 });
 
 export const metadata: Metadata = {
-  title: "ToRead | 读了吗",
+  title: "ToRead of gengyue",
   description: "",
 };
 

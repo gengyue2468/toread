@@ -105,7 +105,7 @@ export default function App() {
   };
 
   return (
-    <div className="max-w-prose mx-auto px-8 pt-16 border-x border-stone-200 dark:border-neutral-800 min-h-screen pb-32">
+    <div className="max-w-prose mx-auto px-8 pt-16 border-x border-stone-200 dark:border-neutral-800 min-h-screen">
       <Hero status={status} itemList={itemList} />
 
       <ActionDialog
@@ -119,7 +119,11 @@ export default function App() {
         trigger={null}
       />
 
-      <Tabs.Root defaultValue="all" className="mt-16 group space-y-0">
+      <Tabs.Root
+        defaultValue="all"
+        onValueChange={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="mt-16 group space-y-0"
+      >
         <Tabs.List className="sticky top-0 bg-stone-100/50 dark:bg-neutral-900/50 z-10 backdrop-blur-lg flex gap-8 mb-0 border-b border-stone-200 dark:border-neutral-800 items-center -mx-8 w-[calc(100%+4rem-2px)] px-8">
           <Tabs.Trigger className={style.tabTrigger} value="all">
             All
