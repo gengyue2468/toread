@@ -2,7 +2,7 @@
 
 import { useSession, signIn, signOut } from "next-auth/react";
 import { motion } from "motion/react";
-import { FolderLockIcon } from "../icons";
+import { FolderLockIcon, LockKeyholeOpenIcon } from "../icons";
 
 export default function BottomBar() {
   const { data: session } = useSession();
@@ -17,8 +17,8 @@ export default function BottomBar() {
         {session ? (
           <>
             <span className="text-xs md:text-sm text-stone-600 dark:text-stone-400 flex flex-row items-center gap-0.5">
-              <FolderLockIcon size={14} className="ml-1 mr-2" /> You have proper
-              access to edit this toread list, congratulations!
+              <LockKeyholeOpenIcon size={14} className="ml-1 mr-2" /> You have proper
+              access to edit this toread list, yay!
             </span>
             <button
               onClick={() => signOut()}
@@ -31,7 +31,7 @@ export default function BottomBar() {
           <>
             <span className="text-xs md:text-sm text-stone-600 dark:text-stone-400 flex flex-row items-center gap-0.5">
               <FolderLockIcon size={14} className="ml-1 mr-2" /> You could only
-              view this toread list but cannot change it
+              view this toread list but cannot edit.
             </span>
             <button
               onClick={() => signIn("github")}
