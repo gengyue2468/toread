@@ -22,7 +22,7 @@ export default function BottomBar() {
             </span>
             <button
               onClick={() => signOut()}
-              className="text-xs md:text-sm px-3 py-1 rounded-full bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-700 dark:hover:bg-stone-200 transition-all"
+              className="whitespace-nowrap text-xs md:text-sm px-3 py-1 rounded-full bg-stone-900 dark:bg-stone-100 text-white dark:text-stone-900 hover:bg-stone-700 dark:hover:bg-stone-200 transition-all"
             >
               Sign Out
             </button>
