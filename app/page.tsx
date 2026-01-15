@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState, useEffect } from "react";
@@ -13,12 +14,15 @@ import Hero from "@/components/hero";
 import Card from "@/components/card";
 import { FileCheckIcon, LoaderIcon } from "@/components/icons";
 import { ActionDialog } from "@/components/dialog";
+import { useSession } from "next-auth/react";
 
 export default function App() {
+  const { data: session } = useSession();
   const [status, setStatus] = useState("");
   const [itemList, setItemList] = useState<ToReadItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [comfirmReadAllOpen, setComfirmReadAllOpen] = useState(false);
+  const [accessDeniedOpen, setAccessDeniedOpen] = useState(false);
 
   useEffect(() => {
     checkHealth().then((data) => setStatus(data.status));
@@ -35,26 +39,50 @@ export default function App() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    await deleteToReadItem(id);
-    setItemList((prev) => prev.filter((item) => item.id !== id));
+    if (!session) {
+      setAccessDeniedOpen(true);
+      return;
+    }
+    try {
+      await deleteToReadItem(id);
+      setItemList((prev) => prev.filter((item) => item.id !== id));
+    } catch (err: Error | any) {
+      setAccessDeniedOpen(true);
+    }
   };
 
   const handleMarkAsRead = async (item: ToReadItem) => {
-    const now = new Date().toISOString();
-    setItemList((prev) =>
-      prev.map((i) =>
-        i.id === item.id ? { ...i, status: "read" as const, read_at: now } : i
-      )
-    );
-    await updateToReadItem(item.id, { status: "read" });
+    if (!session) {
+      setAccessDeniedOpen(true);
+      return;
+    }
+    try {
+      const now = new Date().toISOString();
+      setItemList((prev) =>
+        prev.map((i) =>
+          i.id === item.id ? { ...i, status: "read" as const, read_at: now } : i
+        )
+      );
+      await updateToReadItem(item.id, { status: "read" });
+    } catch (err: any) {
+      setAccessDeniedOpen(true);
+    }
   };
 
   const handleMarkAllRead = async () => {
-    const now = new Date().toISOString();
-    setItemList((prev) =>
-      prev.map((i) => ({ ...i, status: "read" as const, read_at: now }))
-    );
-    await markAllRead();
+    if (!session) {
+      setAccessDeniedOpen(true);
+      return;
+    }
+    try {
+      const now = new Date().toISOString();
+      setItemList((prev) =>
+        prev.map((i) => ({ ...i, status: "read" as const, read_at: now }))
+      );
+      await markAllRead();
+    } catch (err: any) {
+      setAccessDeniedOpen(true);
+    }
   };
 
   const style = {
@@ -63,8 +91,19 @@ export default function App() {
   };
 
   return (
-    <div className="max-w-prose mx-auto px-8 pt-16 border-x border-stone-200 dark:border-neutral-800 min-h-screen">
+    <div className="max-w-prose mx-auto px-8 pt-16 border-x border-stone-200 dark:border-neutral-800 min-h-screen pb-32">
       <Hero status={status} itemList={itemList} />
+
+      <ActionDialog
+        open={accessDeniedOpen}
+        onOpenChange={setAccessDeniedOpen}
+        title="Access Denied"
+        description="You need to sign in to modify the toread list."
+        confirmText="OK"
+        onConfirm={() => setAccessDeniedOpen(false)}
+        isDanger={true}
+        trigger={null}
+      />
 
       <Tabs.Root defaultValue="all" className="mt-16 group space-y-0">
         <Tabs.List className="sticky top-0 bg-stone-100/50 dark:bg-neutral-900/50 z-10 backdrop-blur-lg flex gap-8 mb-0 border-b border-stone-200 dark:border-neutral-800 items-center -mx-8 w-[calc(100%+4rem-2px)] px-8">

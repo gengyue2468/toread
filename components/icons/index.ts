@@ -5,6 +5,8 @@ import { DeleteIcon } from "./delete";
 import { BookmarkIcon } from "./bookmark";
 import { LoaderIcon } from "./loader";
 import { FileCheckIcon } from "./file-check";
+import { FolderLockIcon } from "./folder-lock";
+import { LockKeyholeOpenIcon } from "./locker";
 import { XIcon } from "./x";
 
 export {
@@ -14,6 +16,8 @@ export {
   DeleteIcon,
   BookmarkIcon,
   FileCheckIcon,
+  FolderLockIcon,
+  LockKeyholeOpenIcon,
   LoaderIcon,
   XIcon,
 };

@@ -1,11 +1,21 @@
 "use server";
 
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import axios from "axios";
 import type { ToReadItem } from "@/types/item";
 
 const baseUrl = process.env.TOREAD_API_URL || "http://localhost:3000";
 
+async function checkAuth() {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    throw new Error("Unauthorized: You must be signed in to modify the list");
+  }
+}
+
 export async function deleteToReadItem(id: string) {
+  await checkAuth();
   const res = await axios.delete(`${baseUrl}/api/toread/${id}`);
   return res.data;
 }
@@ -20,11 +30,13 @@ export async function updateToReadItem(
     url: string;
   }>
 ) {
+  await checkAuth();
   const res = await axios.post(`${baseUrl}/api/toread/${id}`, data);
   return res.data;
 }
 
 export async function markAllRead() {
+  await checkAuth();
   const res = await axios.post(`${baseUrl}/api/toread/read-all`);
   return res.data;
 }
