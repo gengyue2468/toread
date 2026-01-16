@@ -1,11 +1,9 @@
-import type { ToReadItem } from "@/types/item";
-
 export default function Hero({
   status,
-  itemList,
+  stats,
 }: {
   status: string;
-  itemList: ToReadItem[];
+  stats: { unread: number; read: number };
 }) {
   return (
     <div>
@@ -18,18 +16,11 @@ export default function Hero({
       <div className="*:font-medium *:text-3xl space-y-2 text-balance">
         <h1>Have you read yet?</h1>
         <h1>
-          There’s{" "}
-          <span className="text-neutral-500">
-            {itemList.filter((i) => i.status !== "unread").length}
-          </span>{" "}
-          URLs you’ve read yet.
+          There’s <span className="text-neutral-500">{stats.read}</span> URLs
+          you’ve read yet.
         </h1>
         <h1>
-          And{" "}
-          <span className="text-neutral-500">
-            {itemList.filter((i) => i.status === "unread").length}
-          </span>{" "}
-          left.
+          And <span className="text-neutral-500">{stats.unread}</span> left.
         </h1>
       </div>
     </div>

@@ -158,7 +158,7 @@ export default function ReadPage() {
         <div className="flex flex-col!">
           <div className="text-xs md:text-sm flex gap-1.5 items-center opacity-75">
             <FolderClockIcon size={16} className="hidden md:block" />
-            <span>Indexed on</span>
+            <span>Indexed</span>
             <span
               title={dayjs
                 .utc(item.added_at)
@@ -171,7 +171,7 @@ export default function ReadPage() {
           {item.read_at && !isUnread && (
             <div className="text-xs md:text-sm flex gap-1.5 items-center opacity-75">
               <FolderClockIcon size={16} className="hidden md:block" />
-              <span>Read on</span>
+              <span>Read</span>
               <span
                 title={dayjs
                   .utc(item.read_at)
