@@ -1,17 +1,18 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { LoaderIcon } from "@/components/icons";
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error");
 
   const errorMessages: Record<string, string> = {
     Default: "An unexpected error occurred during authentication.",
     Configuration: "There is a problem with the server configuration.",
-    AccessDenied:
-      "You do not have permission to sign in.",
+    AccessDenied: "You do not have permission to sign in.",
     Verification:
       "The verification link may have expired or has already been used.",
   };
@@ -37,5 +38,21 @@ export default function AuthErrorPage() {
         ← Back to toread list
       </Link>
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen max-w-prose mx-auto border-x border-stone-200 dark:border-neutral-800 flex flex-col items-center justify-center text-center">
+      <LoaderIcon className="mx-auto my-16 animate-spin" />
+    </div>
+  );
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <AuthErrorContent />
+    </Suspense>
   );
 }
