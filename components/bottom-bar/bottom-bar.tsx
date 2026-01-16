@@ -13,7 +13,7 @@ export default function BottomBar() {
       animate={{ opacity: 1, y: 0 }}
       className="fixed bottom-4 w-[calc(100%-4rem)] md:w-fit left-1/2 -translate-x-1/2 z-20"
     >
-      <div className="flex items-center justify-between gap-4 px-2 py-1.5 bg-stone-100/50 dark:bg-neutral-900/50 backdrop-blur-lg rounded-full border border-stone-300 dark:border-neutral-700">
+      <div className="flex items-center justify-between gap-4 px-2 py-1.5 bg-stone-100/50 dark:bg-neutral-900/50 backdrop-blur-lg rounded-full border border-stone-200/75 dark:border-neutral-800/75">
         {session ? (
           <>
             <span className="text-xs md:text-sm text-stone-600 dark:text-stone-400 flex flex-row items-center gap-0.5">

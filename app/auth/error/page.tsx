@@ -1,0 +1,41 @@
+"use client";
+
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+
+export default function AuthErrorPage() {
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
+
+  const errorMessages: Record<string, string> = {
+    Default: "An unexpected error occurred during authentication.",
+    Configuration: "There is a problem with the server configuration.",
+    AccessDenied:
+      "You do not have permission to sign in.",
+    Verification:
+      "The verification link may have expired or has already been used.",
+  };
+
+  const message = error
+    ? errorMessages[error] || errorMessages.Default
+    : errorMessages.Default;
+
+  return (
+    <div className="min-h-screen max-w-prose mx-auto border-x border-stone-200 dark:border-neutral-800 flex flex-col items-center justify-center text-center">
+      <h1 className="font-serif text-3xl md:text-4xl font-medium text-stone-900 dark:text-stone-100 mb-3">
+        Access Denied
+      </h1>
+
+      <p className="text-stone-500 dark:text-neutral-400 max-w-md mx-auto mb-8">
+        {message}
+      </p>
+
+      <Link
+        href="/"
+        className="text-stone-500 hover:text-stone-700 dark:hover:text-stone-300"
+      >
+        ← Back to toread list
+      </Link>
+    </div>
+  );
+}

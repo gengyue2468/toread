@@ -35,6 +35,7 @@ export function ActionDialog({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
             className="fixed inset-0 bg-black/50 backdrop-blur-xs z-20"
+            onClick={(e) => e.stopPropagation()}
           />
         </Dialog.Overlay>
         <Dialog.Content asChild>
