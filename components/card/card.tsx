@@ -48,8 +48,8 @@ export default function Card({
       className={classNames(
         "cursor-pointer block hover:bg-stone-200/50 dark:hover:bg-neutral-800/50 p-8 -translate-x-8 w-[calc(100%+4rem)] transition-all border-y border-stone-200 dark:border-neutral-800",
         !isUnread
-          ? "opacity-30"
-          : "opacity-100 hover:opacity-100 group-hover:opacity-50"
+          ? "opacity-30 hover:opacity-100"
+          : "opacity-100"
       )}
     >
       <div className="flex justify-between items-center mb-4">

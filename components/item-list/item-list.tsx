@@ -59,20 +59,26 @@ export default function ItemList({
     }
   };
 
+  // 同步初始数据
+  useEffect(() => {
+    if (initialItems.length > 0) {
+      setItems(initialItems);
+      setIsLoading(false);
+    }
+  }, [initialItems]);
+
   // 初始化
   useEffect(() => {
     if (initializedRef.current) return;
     initializedRef.current = true;
 
     if (initialItems.length > 0) {
-      // 有初始数据，直接使用
       setItems(initialItems);
-      // 根据初始数据量计算当前页码
       pageRef.current = Math.ceil(initialItems.length / pageSize);
       setHasMore(initialItems.length >= pageSize);
       setIsLoading(false);
     } else {
-      // 没有初始数据，触发加载第一页
+      setIsLoading(true);
       fetchMore();
     }
   }, [initialItems, pageSize]);

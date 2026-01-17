@@ -9,6 +9,9 @@ import { FolderLockIcon } from "./folder-lock";
 import { LockKeyholeOpenIcon } from "./locker";
 import { XIcon } from "./x";
 import { ArrowLeftIcon } from "./arrow-left";
+import { SearchIcon } from "./search";
+import { RefreshIcon } from "./refresh";
+import { ArrowRightIcon } from "./arrow-right";
 
 export {
   LinkIcon,
@@ -22,4 +25,7 @@ export {
   LoaderIcon,
   XIcon,
   ArrowLeftIcon,
+  SearchIcon,
+  RefreshIcon,
+  ArrowRightIcon,
 };
